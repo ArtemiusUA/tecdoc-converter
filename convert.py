@@ -147,7 +147,7 @@ def transfer_data(filter_table=None, limit=0, begin=''):
                                  format(pre=groups.group(1).lower(), post=groups.group(2).lower(), column=column.column_name.lower()))
                 if '_CDS_ID' in column.column_name:
                     groups = re.search(CDS_ID_RE, column.column_name)
-                    fields.append('{}_cds_tex.tex_text {}_cds_text'.format(groups.group(1).lower()))
+                    fields.append('{pre}_cds_tex.tex_text {pre}_cds_text'.format(pre=groups.group(1).lower()))
                     joins.append('LEFT OUTER JOIN tof_country_designations {pre}_cds \
                                  ON {pre}_cds.cds_id = {column} AND {pre}_cds.cds_lng_id = 16 AND {pre}_cds.cds_ctm Subrange(221 cast integer) = 1'.
                                  format(pre=groups.group(1).lower(), column=column.column_name.lower()))
