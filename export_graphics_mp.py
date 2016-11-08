@@ -42,25 +42,28 @@ def exec_query(query='', params=None):
 
 
 def save_image(row):
-    gra_id, data, table_number = row
+    gra_id, data, table_number, gra_grd_id = row
     if DIRPATH_BY_TABLES:
         dir_path = os.path.join(SAVE_PATH, str(table_number))
+        file_path = os.path.join(dir_path, '{}.gif'.format(gra_id))
     else:
         dir_path = os.path.join(SAVE_PATH, gra_id[0:6])
+        file_path = os.path.join(dir_path, '{}.gif'.format(gra_grd_id))
     if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
-    file_path = os.path.join(dir_path, '{}.gif'.format(gra_id))
+        os.makedirs(dir_path)    
     if os.path.exists(file_path):
         return
     img = Image.open(StringIO.StringIO(data))
     img.save(file_path)
 
 
+
+
 def export_table(table_number):
 
     rows = exec_query(
         """
-        select gra_id, grd_graphic, {table_number} as table_number from tof_gra_data_{table_number}
+        select gra_id, grd_graphic, {table_number} as table_number, gra_grd_id from tof_gra_data_{table_number}
         left join tof_graphics on grd_id = gra_grd_id
         left join tof_link_gra_art on gra_id = lga_gra_id
         WHERE gra_tab_nr = {table_number}
